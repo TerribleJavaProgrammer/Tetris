@@ -477,13 +477,13 @@ function drawBlock(x, y, color) {
     if (color === 'black') {
         ctx.fillStyle = color;
         ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'darkgray';
         ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     } else {
         const gradient = createBlockGradient(ctx, x * blockSize, y * blockSize, color, blockSize);
         ctx.fillStyle = gradient;
         ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-        ctx.strokeStyle = 'darkgray';
+        ctx.strokeStyle = 'black';
         ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     }
 }
@@ -563,11 +563,8 @@ function drawPiecePreview(context, pieceToDraw, previewCanvas) {
     }
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[0].length; j++) {
-            if (arr[i][j] === 1) { // Checks if the cell is part of the piece.
-                context.fillStyle = pieceColors[pieceType]; // Sets the fill color to the piece's color.
-                context.fillRect(j * 30, i * 30, 30, 30); // Draws the piece block.
-                context.strokeStyle = 'black'; // Sets the stroke color for the block's border.
-                context.strokeRect(j * 30, i * 30, 30, 30); // Draws the block's border.
+            if (arr[i][j] === 1) {
+                drawBlock(j*30, i*30, pieceColors[pieceType]);
             }
         }
     }
