@@ -1,4 +1,4 @@
-import Block from './Block.js';
+import Block from 'Tetris/Block.js';
 
 export default class Piece {
     constructor(type, arr, colorArr) {
