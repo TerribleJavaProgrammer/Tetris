@@ -488,18 +488,17 @@
             linesDisplay.textContent = `Lines: ${clearedLines}`; // Updates the lines display with the current number of cleared lines.
         }
         
-        // *experimental area*
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < ROWS; i++) {
                 for (let j = 0; j < COLUMNS; j++) {
                     if (i !== ROWS - 1) {
-                        if (game[i][j] !== 0 && colorBoard[i][j]) {
-                            if(pieceColors[colorBoard[i][j]]){
+                        if (game[i][j] !== 0 && colorBoard[i][j]) 
+                            if (pieceColors[colorBoard[i][j]]) {
                                 drawBlock(j, i, pieceColors[colorBoard[i][j]]);
                             } else {
                                 console.error("Invalid colorBoard value:", colorBoard[i][j]);
-                                drawBlock(j,i, "black");
+                                drawBlock(j, i, 'black');
                             }
                         } else {
                             drawBlock(j, i, 'black');
