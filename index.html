@@ -399,6 +399,12 @@
             "T": "purple",
             "Z": "red"
         };
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+            }
+        });
         
         resumeButton.addEventListener('click', () => {
             pauseGame();
