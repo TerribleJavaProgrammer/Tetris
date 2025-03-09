@@ -63,10 +63,20 @@
         </div>
     </div>
     
+    <div id="startMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
+    <h2>Tetris</h2>
+    <button id="startButton">Start</button>
+    </div>
+    
     <div id="pauseMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
     <h2>Paused</h2>
     <button id="resumeButton">Resume</button>
     <button id="restartButton">Restart</button>
+    </div>
+    
+    <div id="lossMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
+    <h2>Lost</h2>
+    <button id="resetButton">Continue</button>
     </div>
 
     <script>
@@ -322,6 +332,10 @@
         const pauseMenu = document.getElementById('pauseMenu');
         const resumeButton = document.getElementById('resumeButton');
         const restartButton = document.getElementById('restartButton');
+        const resetMenu = document.getElementById('startMenu');
+        const startButton = document.getElementById('startButton');
+        const lossMenu = document.getElementById('lossMenu');
+        const resetButton = document.getElementById('resetButton');
         
         resumeButton.addEventListener('click', () => {
             pauseGame();
@@ -332,6 +346,20 @@
             pauseGame();
         });
         
+        startButton.addEventListener('click', () => {
+            gameLoop();
+            startMenu.style.display = 'none';
+        });
+        
+        resetButton.addEventListener('click', () => {
+            resetGame();
+            pause();
+            if (!gameLoopRunning) {
+                gameLoop();
+            }
+            lossMenu.style.display = 'none';
+        });
+        
         function randomPiece() {
             const pieces = ["O", "I", "L", "J", "S", "Z", "T"];
             return pieces[Math.floor(Math.random() * pieces.length)];
@@ -340,7 +368,7 @@
         function setupGame() {
             piece = new Piece(randomPiece(), game);
             nextPiece = new Piece(randomPiece(), game);
-            gameLoop();
+            startMenu.style.display = 'block';
             document.addEventListener('keydown', handleKeyPress);
         }
         
@@ -395,8 +423,8 @@
                         nextPiece = new Piece(randomPiece(), game);
                         piece.ground();
                         if (piece.grounded()) {
-                            alert("Game Over!");
-                            resetGame();
+                            lossMenu.style.display = 'block';
+                            pause();
                         }
                     }
                     const rowsComplete = clearFullLines();
@@ -450,6 +478,10 @@
                     gameLoop();
                 }
             }
+        }
+        
+        function pause() {
+            paused = !paused;
         }
         
         function updateDisplay() {
