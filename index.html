@@ -3,7 +3,6 @@
 <head>
     <title>Tetris</title>
     <style>
-        
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body {
             display: flex;
@@ -116,7 +115,7 @@
     </div>
 
     <script>
-        
+    
         class Block {
             constructor(x, y, grounded) {
                 this.x = x;
@@ -344,9 +343,11 @@
         const ROWS = 21;
         const COLUMNS = 10;
         const game = [];
+        
         for (let i = 0; i < ROWS; i++) {
             game[i] = new Array(COLUMNS).fill(0);
         }
+        
         for (let i = 0; i < COLUMNS; i++) {
             game[ROWS - 1][i] = 1;
         }
@@ -466,7 +467,7 @@
                     }
                     const rowsComplete = clearFullLines();
                     clearedLines += rowsComplete;
-                    score += rowsComplete * 100;
+                    score += (rowsComplete ** 2) * 100;
                     updateDisplay();
                     drawGame();
                 }
@@ -596,6 +597,7 @@
         }
 
         setupGame();
+        
     </script>
     
 </body>
