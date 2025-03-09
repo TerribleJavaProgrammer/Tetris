@@ -507,6 +507,7 @@
         }
 
         function drawBlock(x, y, color) {
+            const blockSize = 30;
             const gradient = createBlockGradient(ctx, x * blockSize, y * blockSize, color, blockSize);
         
             ctx.fillStyle = gradient;
