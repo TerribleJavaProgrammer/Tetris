@@ -1,5 +1,5 @@
-import Block from 'Tetris/Block.js';
-import Piece from 'Tetris/Piece.js';
+import Block from '/Block.js';
+import Piece from '/Piece.js';
 
 const ROWS = 21; // Number of rows in the game board.
 const COLUMNS = 10; // Number of columns in the game board.
