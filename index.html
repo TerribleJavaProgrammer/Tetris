@@ -237,7 +237,6 @@
                     default:
                         throw new Error("Invalid piece type");
                 }
-                console.log(this.block1.getY());
             }
         
             ground() {
@@ -473,12 +472,12 @@
         function holdPiece() {
             let holder;
             try {
-                holder = new Piece(heldPiece.getType(), game);
+                holder = new Piece(heldPiece.getType(), game, colorBoard);
             } catch (e) {
-                holder = new Piece(randomPiece(), game);
+                holder = new Piece(randomPiece(), game, colorBoard);
             }
-            heldPiece = new Piece(nextPiece.getType(), game);
-            nextPiece = new Piece(holder.getType(), game);
+            heldPiece = new Piece(nextPiece.getType(), game, colorBoard);
+            nextPiece = new Piece(holder.getType(), game, colorBoard);
             drawGame();
         }
 
