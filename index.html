@@ -3,6 +3,7 @@
 <head>
     <title>Tetris</title>
     <style>
+    
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body {
             display: flex;
@@ -587,25 +588,25 @@
 
             switch (pieceType) {
                 case "O":
-                    arr = [[1, 1], [1, 1]];
+                    arr = [[0, 0, 0], [0, 1, 1], [0, 1, 1], [0, 0, 0]];
                     break;
                 case "I":
-                    arr = [[1], [1], [1], [1]];
+                    arr = [[0, 1], [0, 1], [0, 1], [0, 1]];
                     break;
                 case "S":
-                    arr = [[0, 1, 1], [1, 1, 0]];
+                    arr = [[0, 0, 0], [0, 1, 1], [1, 1, 0], [0, 0, 0]];
                     break;
                 case "Z":
-                    arr = [[1, 1, 0], [0, 1, 1]];
+                    arr = [[0, 0, 0], [1, 1, 0], [0, 1, 1], [0, 0, 0]];
                     break;
                 case "L":
-                    arr = [[1, 0], [1, 0], [1, 1]];
+                    arr = [[0, 1, 0], [0, 1, 0], [0, 1, 1]];
                     break;
                 case "J":
-                    arr = [[0, 1], [0, 1], [1, 1]];
+                    arr = [[0, 0, 1], [0, 0, 1], [0, 1, 1]];
                     break;
                 case "T":
-                    arr = [[1, 1, 1], [0, 1, 0]];
+                    arr = [[0, 0, 0], [1, 1, 1], [0, 1, 0], [0, 0, 0]];
                     break;
                 default:
                     return;
