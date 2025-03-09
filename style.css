@@ -1,69 +1,70 @@
 body {
-    display: flex; // Uses flexbox for layout.
-    justify-content: center; // Centers content horizontally.
-    align-items: center; // Centers content vertically.
-    flex-direction: column; // Arranges content in a column.
-    background-color: #282c34; // Sets a dark background color.
-    color: #ffffff; // Sets text color to white.
-    font-family: 'Press Start 2P', cursive; // Uses the imported font.
-    margin: 0; // Removes default body margins.
-    padding: 20px; // Adds padding to the body.
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #282c34;
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 20px;
 }
 
 canvas {
-    border: 4px solid #2b2b2b; // Adds a border to the canvas.
-    background-color: #1e1e1e; // Sets a dark background for the canvas.
-    border-radius: 8px; // Rounds the canvas corners.
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); // Adds a shadow effect.
+    border: 4px solid #2b2b2b;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
 
 #gameCanvas {
-    margin-bottom: 20px; // Adds margin below the game canvas.
+    margin-bottom: 20px;
 }
 
 .info-container, .preview-container {
-    display: flex; // Uses flexbox for layout.
-    justify-content: space-around; // Distributes space evenly between items.
-    width: 300px; // Sets a fixed width.
-    margin-bottom: 20px; // Adds margin below the containers.
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    margin-bottom: 20px;
 }
 
 .info-box, .preview-box {
-    text-align: center; // Centers text within the boxes.
-    background-color: #383e4a; // Sets a background color for the boxes.
-    padding: 15px; // Adds padding to the boxes.
-    border-radius: 8px; // Rounds the box corners.
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); // Adds a shadow effect.
+    text-align: center;
+    background-color: #383e4a;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 #startMenu, #pauseMenu, #lossMenu {
-    position: absolute; // Positions the menus absolutely.
-    top: 25%; // Positions the menus vertically.
-    left: 50%; // Positions the menus horizontally.
-    transform: translate(-50%, -50%); // Centers the menus precisely.
-    background-color: #4a5568; // Sets a background color for the menus.
-    border: 2px solid #2b2b2b; // Adds a border to the menus.
-    padding: 20px; // Adds padding to the menus.
-    z-index: 10; // Sets the stacking order.
-    border-radius: 10px; // Rounds the menu corners.
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); // Adds a shadow effect.
-    text-align: center; // Centers text within the menus.
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #4a5568;
+    border: 2px solid #2b2b2b;
+    padding: 20px;
+    z-index: 10;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
 button {
-    font-family: 'Press Start 2P', cursive; // Uses the imported font.
-    background-color: #2b2b2b; // Sets a background color for buttons.
-    color: #ffffff; // Sets text color to white.
-    border: none; // Removes button borders.
-    padding: 10px 20px; // Adds padding to buttons.
-    border-radius: 5px; // Rounds button corners.
-    cursor: pointer; // Changes cursor on hover.
-    transition: background-color 0.3s ease; // Adds a transition effect.
+    font-family: 'Press Start 2P', cursive;
+    background-color: #2b2b2b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #48b4e0; // Changes background color on hover.
+    background-color: #48b4e0;
 }
 
 .hidden {
-    display: none !important; // Hides elements with this class.
+    display: none !important;
 }
