@@ -477,7 +477,7 @@ function drawBlock(x, y, color) {
     if (color === 'black') {
         ctx.fillStyle = color;
         ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-        ctx.strokeStyle = 'darkgray';
+        ctx.strokeStyle = 'black';
         ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     } else {
         const gradient = createBlockGradient(ctx, x * blockSize, y * blockSize, color, blockSize);
@@ -490,8 +490,8 @@ function drawBlock(x, y, color) {
 
 function createBlockGradient(ctx, x, y, color, blockSize) {
     const gradient = ctx.createLinearGradient(x, y, x + blockSize, y + blockSize);
-    const lightColor = lightenColor(color, 100);
-    const darkColor = darkenColor(color, 100);
+    const lightColor = lightenColor(color, 50);
+    const darkColor = darkenColor(color, 50);
     gradient.addColorStop(0, lightColor);
     gradient.addColorStop(1, darkColor);
     return gradient;
