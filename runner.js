@@ -558,10 +558,14 @@ function drawPiecePreview(context, pieceToDraw, previewCanvas) {
         default:
             return;
     }
+    
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[0].length; j++) {
             if (arr[i][j] == 1) {
-                drawBlock(j*30, i*30, pieceColors[pieceType]);
+                context.fillStyle = 'black;
+                context.fillRect(j * 30, i * 30, 30, 30);
+                context.strokeStyle = 'black';
+                context.strokeRect(j * 30, i * 30, 30, 30);
             }
         }
     }
