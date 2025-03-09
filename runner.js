@@ -561,7 +561,7 @@ function drawPiecePreview(context, pieceToDraw, previewCanvas) {
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[0].length; j++) {
             if (arr[i][j] === 1) {
-                drawBlock(j*30, i*30, colorToHex[pieceColors[pieceType]]);
+                drawBlock(j*30, i*30, colorNameToHex[pieceColors[pieceType]]);
             }
             else {
                 drawBlock(j*30, i*30, 'black');
