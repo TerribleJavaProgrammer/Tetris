@@ -1,4 +1,4 @@
-export default class Block {
+class Block {
     constructor(x, y, grounded) {
         this.x = x; // Horizontal position of the block.
         this.y = y; // Vertical position of the block.
