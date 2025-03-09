@@ -3,43 +3,79 @@
 <head>
     <title>Tetris</title>
     <style>
+        
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            background-color: #f0f0f0;
+            background-color: #282c34;
+            color: #ffffff;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            padding: 20px;
         }
 
         canvas {
-            border: 2px solid black;
-            background-color: black;
+            border: 4px solid #2b2b2b;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
 
         #gameCanvas {
             margin-bottom: 20px;
         }
 
-        .info-container {
+        .info-container, .preview-container {
             display: flex;
             justify-content: space-around;
             width: 300px;
             margin-bottom: 20px;
         }
 
-        .info-box {
+        .info-box, .preview-box {
+            text-align: center;
+            background-color: #383e4a;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #startMenu, #pauseMenu, #lossMenu {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4a5568;
+            border: 2px solid #2b2b2b;
+            padding: 20px;
+            z-index: 10;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
-        .preview-container {
-            display: flex;
-            justify-content: space-around;
-            width: 300px;
+        button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .preview-box {
-            text-align: center;
+        button:hover {
+            background-color: #48b4e0;
         }
+
+        .hidden {
+            display: none !important;
+        }
+        
     </style>
 </head>
 <body>
@@ -62,24 +98,25 @@
             <canvas id="heldPieceCanvas" width="120" height="120"></canvas>
         </div>
     </div>
-    
-    <div id="startMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
-    <h2>Tetris</h2>
-    <button id="startButton">Start</button>
+
+    <div id="startMenu" class="hidden">
+        <h2>Tetris</h2>
+        <button id="startButton">Start</button>
     </div>
-    
-    <div id="pauseMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
-    <h2>Paused</h2>
-    <button id="resumeButton">Resume</button>
-    <button id="restartButton">Restart</button>
+
+    <div id="pauseMenu" class="hidden">
+        <h2>Paused</h2>
+        <button id="resumeButton">Resume</button>
+        <button id="restartButton">Restart</button>
     </div>
-    
-    <div id="lossMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
-    <h2>Lost</h2>
-    <button id="resetButton">Continue</button>
+
+    <div id="lossMenu" class="hidden">
+        <h2>Lost</h2>
+        <button id="resetButton">Continue</button>
     </div>
 
     <script>
+        
         class Block {
             constructor(x, y, grounded) {
                 this.x = x;
@@ -332,46 +369,46 @@
         const pauseMenu = document.getElementById('pauseMenu');
         const resumeButton = document.getElementById('resumeButton');
         const restartButton = document.getElementById('restartButton');
-        const resetMenu = document.getElementById('startMenu');
+        const startMenu = document.getElementById('startMenu');
         const startButton = document.getElementById('startButton');
         const lossMenu = document.getElementById('lossMenu');
         const resetButton = document.getElementById('resetButton');
-        
+
         resumeButton.addEventListener('click', () => {
             pauseGame();
         });
-        
+
         restartButton.addEventListener('click', () => {
             resetGame();
             pauseGame();
         });
-        
+
         startButton.addEventListener('click', () => {
             gameLoop();
-            startMenu.style.display = 'none';
+            startMenu.classList.add('hidden');
         });
-        
+
         resetButton.addEventListener('click', () => {
             resetGame();
             pause();
             if (!gameLoopRunning) {
                 gameLoop();
             }
-            lossMenu.style.display = 'none';
+            lossMenu.classList.add('hidden');
         });
-        
+
         function randomPiece() {
             const pieces = ["O", "I", "L", "J", "S", "Z", "T"];
             return pieces[Math.floor(Math.random() * pieces.length)];
         }
-        
+
         function setupGame() {
             piece = new Piece(randomPiece(), game);
             nextPiece = new Piece(randomPiece(), game);
-            startMenu.style.display = 'block';
+            startMenu.classList.remove('hidden');
             document.addEventListener('keydown', handleKeyPress);
         }
-        
+
         function handleKeyPress(e) {
             if (paused) return;
             switch (e.key) {
@@ -399,7 +436,7 @@
             }
             drawGame();
         }
-        
+
         function holdPiece() {
             let holder;
             try {
@@ -411,7 +448,7 @@
             nextPiece = holder;
             drawGame();
         }
-        
+
         function gameLoop() {
             if (!gameLoopRunning) {
                 gameLoopRunning = true;
@@ -423,7 +460,7 @@
                         nextPiece = new Piece(randomPiece(), game);
                         piece.ground();
                         if (piece.grounded()) {
-                            lossMenu.style.display = 'block';
+                            lossMenu.classList.remove('hidden');
                             pause();
                         }
                     }
@@ -439,7 +476,7 @@
                 }, 500);
             }
         }
-        
+
         function clearFullLines() {
             let rowsCleared = 0;
             for (let i = 0; i < ROWS - 1; i++) {
@@ -454,7 +491,7 @@
             }
             return rowsCleared;
         }
-        
+
         function resetGame() {
             score = 0;
             clearedLines = 0;
@@ -467,28 +504,28 @@
             drawGame();
             gameLoop();
         }
-        
+
         function pauseGame() {
             paused = !paused;
             if (paused) {
-                pauseMenu.style.display = 'block';
+                pauseMenu.classList.remove('hidden');
             } else {
-                pauseMenu.style.display = 'none';
+                pauseMenu.classList.add('hidden');
                 if (!gameLoopRunning) {
                     gameLoop();
                 }
             }
         }
-        
+
         function pause() {
             paused = !paused;
         }
-        
+
         function updateDisplay() {
             scoreDisplay.textContent = `Score: ${score}`;
             linesDisplay.textContent = `Lines: ${clearedLines}`;
         }
-        
+
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < ROWS; i++) {
@@ -502,48 +539,64 @@
                     }
                 }
             }
-            
+
             drawPiecePreview(nextCtx, nextPiece, nextCanvas);
             drawPiecePreview(heldCtx, heldPiece, heldCanvas);
         }
-        
+
         function drawBlock(x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x * 30, y * 30, 30, 30);
             ctx.strokeStyle = 'darkgray';
             ctx.strokeRect(x * 30, y * 30, 30, 30);
         }
-        
-        function drawPiecePreview(context, pieceToDraw, previewCanvas){
-            context.clearRect(0,0, previewCanvas.width, previewCanvas.height);
+
+        function drawPiecePreview(context, pieceToDraw, previewCanvas) {
+            context.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
             if (!pieceToDraw) return;
             const pieceType = pieceToDraw.getType();
             let arr;
-        
+
             switch (pieceType) {
-                case "O": arr = [[1,1],[1,1]]; break;
-                case "I": arr = [[1],[1],[1],[1]]; break;
-                case "S": arr = [[0,1,1],[1,1,0]]; break;
-                case "Z": arr = [[1,1,0],[0,1,1]]; break;
-                case "L": arr = [[1,0],[1,0],[1,1]]; break;
-                case "J": arr = [[0,1],[0,1],[1,1]]; break;
-                case "T": arr = [[1,1,1],[0,1,0]]; break;
-                default: return;
+                case "O":
+                    arr = [[1, 1], [1, 1]];
+                    break;
+                case "I":
+                    arr = [[1], [1], [1], [1]];
+                    break;
+                case "S":
+                    arr = [[0, 1, 1], [1, 1, 0]];
+                    break;
+                case "Z":
+                    arr = [[1, 1, 0], [0, 1, 1]];
+                    break;
+                case "L":
+                    arr = [[1, 0], [1, 0], [1, 1]];
+                    break;
+                case "J":
+                    arr = [[0, 1], [0, 1], [1, 1]];
+                    break;
+                case "T":
+                    arr = [[1, 1, 1], [0, 1, 0]];
+                    break;
+                default:
+                    return;
             }
-        
+
             for (let i = 0; i < arr.length; i++) {
                 for (let j = 0; j < arr[0].length; j++) {
                     if (arr[i][j] === 1) {
                         context.fillStyle = 'lightgray';
                         context.fillRect(j * 30, i * 30, 30, 30);
                         context.strokeStyle = 'black';
-                        context.strokeRect(j* 30, i*30, 30, 30);
+                        context.strokeRect(j * 30, i * 30, 30, 30);
                     }
                 }
             }
         }
-        
+
         setupGame();
     </script>
+    
 </body>
 </html>
