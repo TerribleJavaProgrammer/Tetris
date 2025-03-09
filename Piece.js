@@ -1,3 +1,5 @@
+import Block from './Block.js';
+
 export default class Piece {
     constructor(type, arr, colorArr) {
         this.type = type; // Stores the type of the Tetris piece (e.g., "I", "O", "T").
