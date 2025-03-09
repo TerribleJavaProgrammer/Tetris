@@ -184,9 +184,10 @@
         }
     
         class Piece {
-            constructor(type, arr) {
+            constructor(type, arr, colorArr) {
                 this.type = type;
                 this.arr = arr;
+                this.colorArr = colorArr;
                 this._grounded = false;
         
                 switch (type) {
@@ -248,6 +249,10 @@
                     this.arr[this.block2.getY()][this.block2.getX()] = 1;
                     this.arr[this.block3.getY()][this.block3.getX()] = 1;
                     this.arr[this.block4.getY()][this.block4.getX()] = 1;
+                    this.colorArr[this.block1.getY()][this.block1.getX()] = pieceColors[this.type];
+                    this.colorArr[this.block2.getY()][this.block2.getX()] = pieceColors[this.type];
+                    this.colorArr[this.block3.getY()][this.block3.getX()] = pieceColors[this.type];
+                    this.colorArr[this.block4.getY()][this.block4.getX()] = pieceColors[this.type];
                 }
             }
         
@@ -322,6 +327,10 @@
                 this.arr[this.block2.getY()][this.block2.getX()] = 2;
                 this.arr[this.block3.getY()][this.block3.getX()] = 2;
                 this.arr[this.block4.getY()][this.block4.getX()] = 2;
+                this.colorArr[this.block1.getY()][this.block1.getX()] = pieceColors[this.type];
+                this.colorArr[this.block2.getY()][this.block2.getX()] = pieceColors[this.type];
+                this.colorArr[this.block3.getY()][this.block3.getX()] = pieceColors[this.type];
+                this.colorArr[this.block4.getY()][this.block4.getX()] = pieceColors[this.type];
             }
         
             clear() {
@@ -329,6 +338,10 @@
                 this.arr[this.block2.getY()][this.block2.getX()] = 0;
                 this.arr[this.block3.getY()][this.block3.getX()] = 0;
                 this.arr[this.block4.getY()][this.block4.getX()] = 0;
+                this.colorArr[this.block1.getY()][this.block1.getX()] = 'black';
+                this.colorArr[this.block2.getY()][this.block2.getX()] = 'black';
+                this.colorArr[this.block3.getY()][this.block3.getX()] = 'black';
+                this.colorArr[this.block4.getY()][this.block4.getX()] = 'black';
             }
         
             getType() {
@@ -343,9 +356,11 @@
         const ROWS = 21;
         const COLUMNS = 10;
         const game = [];
-        
+        const colorBoard = [];
+
         for (let i = 0; i < ROWS; i++) {
             game[i] = new Array(COLUMNS).fill(0);
+            colorBoard[i] = new Array(COLUMNS).fill('black');
         }
         
         for (let i = 0; i < COLUMNS; i++) {
@@ -374,7 +389,16 @@
         const startButton = document.getElementById('startButton');
         const lossMenu = document.getElementById('lossMenu');
         const resetButton = document.getElementById('resetButton');
-
+        const pieceColors = {
+            "I": "cyan",
+            "J": "blue",
+            "L": "orange",
+            "O": "yellow",
+            "S": "green",
+            "T": "purple",
+            "Z": "red"
+        };
+        
         resumeButton.addEventListener('click', () => {
             pauseGame();
         });
@@ -404,8 +428,8 @@
         }
 
         function setupGame() {
-            piece = new Piece(randomPiece(), game);
-            nextPiece = new Piece(randomPiece(), game);
+            piece = new Piece(randomPiece(), game, colorBoard);
+            nextPiece = new Piece(randomPiece(), game, colorBoard);
             startMenu.classList.remove('hidden');
             document.addEventListener('keydown', handleKeyPress);
         }
@@ -458,7 +482,7 @@
                     piece.fall();
                     if (piece.grounded()) {
                         piece = nextPiece;
-                        nextPiece = new Piece(randomPiece(), game);
+                        nextPiece = new Piece(randomPiece(), game, colorBoard);
                         piece.ground();
                         if (piece.grounded()) {
                             lossMenu.classList.remove('hidden');
@@ -474,7 +498,7 @@
                 setTimeout(() => {
                     gameLoopRunning = false;
                     gameLoop();
-                }, 500);
+                }, Math.max(100, 500 - linesCleared * 10));
             }
         }
 
@@ -485,8 +509,10 @@
                 if (full) {
                     for (let k = i; k > 0; k--) {
                         game[k] = [...game[k - 1]];
+                        colorBoard[k] = [...colorBoard[k - 1]];
                     }
                     game[0].fill(0);
+                    colorBoard[0].fill('black');
                     rowsCleared++;
                 }
             }
@@ -498,9 +524,10 @@
             clearedLines = 0;
             for (let i = 0; i < ROWS - 1; i++) {
                 game[i].fill(0);
+                colorBoard[i].fill('black');
             }
-            piece = new Piece(randomPiece(), game);
-            nextPiece = new Piece(randomPiece(), game);
+            piece = new Piece(randomPiece(), game, colorBoard);
+            nextPiece = new Piece(randomPiece(), game, colorBoard);
             updateDisplay();
             drawGame();
             gameLoop();
@@ -532,15 +559,15 @@
             for (let i = 0; i < ROWS; i++) {
                 for (let j = 0; j < COLUMNS; j++) {
                     if (i !== ROWS - 1) {
-                        if (game[i][j] !== 0) {
-                            drawBlock(j, i, 'lightgray');
+                        if (game[i][j] !== 0 && colorBoard[i][j]) {
+                            drawBlock(j, i, colorBoard[i][j]);
                         } else {
                             drawBlock(j, i, 'black');
                         }
                     }
                 }
             }
-
+            
             drawPiecePreview(nextCtx, nextPiece, nextCanvas);
             drawPiecePreview(heldCtx, heldPiece, heldCanvas);
         }
@@ -587,7 +614,7 @@
             for (let i = 0; i < arr.length; i++) {
                 for (let j = 0; j < arr[0].length; j++) {
                     if (arr[i][j] === 1) {
-                        context.fillStyle = 'lightgray';
+                        context.fillStyle = pieceColors[pieceType];
                         context.fillRect(j * 30, i * 30, 30, 30);
                         context.strokeStyle = 'black';
                         context.strokeRect(j * 30, i * 30, 30, 30);
