@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tetris</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            border: 2px solid black;
+            background-color: black;
+        }
+
+        #gameCanvas {
+            margin-bottom: 20px;
+        }
+
+        .info-container {
+            display: flex;
+            justify-content: space-around;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: space-around;
+            width: 300px;
+        }
+
+        .preview-box {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="300" height="600"></canvas>
+
+    <div class="info-container">
+        <div class="info-box">
+            <div id="score">Score: 0</div>
+            <div id="lines">Lines: 0</div>
+        </div>
+    </div>
+
+    <div class="preview-container">
+        <div class="preview-box">
+            <div>Next:</div>
+            <canvas id="nextPieceCanvas" width="120" height="120"></canvas>
+        </div>
+        <div class="preview-box">
+            <div>Held:</div>
+            <canvas id="heldPieceCanvas" width="120" height="120"></canvas>
+        </div>
+    </div>
+    
+    <div id="pauseMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 2px solid black; padding: 20px; z-index: 10;">
+    <h2>Paused</h2>
+    <button id="resumeButton">Resume</button>
+    <button id="restartButton">Restart</button>
+    </div>
+
+    <script>
+        class Block {
+            constructor(x, y, grounded) {
+                this.x = x;
+                this.y = y;
+                this.grounded = grounded;
+            }
+        
+            isGrounded() {
+                return this.grounded;
+            }
+        
+            ground() {
+                this.grounded = true;
+            }
+        
+            fall() {
+                this.y++;
+            }
+        
+            shiftR() {
+                this.x++;
+            }
+        
+            shiftL() {
+                this.x--;
+            }
+        
+            set(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        
+            getX() {
+                return this.x;
+            }
+        
+            getY() {
+                return this.y;
+            }
+        
+            testFall(arr) {
+                return arr[this.y + 1] && arr[this.y + 1][this.x] === 1;
+            }
+        
+            canShiftL(arr) {
+                if (this.x - 1 >= 0) {
+                    return arr[this.y] && (arr[this.y][this.x - 1] === 0 || arr[this.y][this.x - 1] === 2);
+                }
+                return false;
+            }
+        
+            canShiftR(arr) {
+                if (this.x + 1 < 10) {
+                    return arr[this.y] && (arr[this.y][this.x + 1] === 0 || arr[this.y][this.x + 1] === 2);
+                }
+                return false;
+            }
+        
+            testIndex(x, y, arr) {
+                try {
+                    return arr[y] && (arr[y][x] === 0 || arr[y][x] === 2);
+                } catch (e) {
+                    return false;
+                }
+            }
+        }
+    
+        class Piece {
+            constructor(type, arr) {
+                this.type = type;
+                this.arr = arr;
+                this._grounded = false;
+        
+                switch (type) {
+                    case "O":
+                        this.block1 = new Block(4, 0, false);
+                        this.block2 = new Block(5, 0, false);
+                        this.block3 = new Block(4, 1, false);
+                        this.block4 = new Block(5, 1, false);
+                        break;
+                    case "I":
+                        this.block1 = new Block(4, 0, false);
+                        this.block2 = new Block(4, 1, false);
+                        this.block3 = new Block(4, 2, false);
+                        this.block4 = new Block(4, 3, false);
+                        break;
+                    case "S":
+                        this.block1 = new Block(4, 0, false);
+                        this.block2 = new Block(5, 0, false);
+                        this.block3 = new Block(3, 1, false);
+                        this.block4 = new Block(4, 1, false);
+                        break;
+                    case "Z":
+                        this.block1 = new Block(3, 0, false);
+                        this.block2 = new Block(4, 0, false);
+                        this.block3 = new Block(4, 1, false);
+                        this.block4 = new Block(5, 1, false);
+                        break;
+                    case "L":
+                        this.block1 = new Block(4, 0, false);
+                        this.block2 = new Block(4, 1, false);
+                        this.block3 = new Block(4, 2, false);
+                        this.block4 = new Block(5, 2, false);
+                        break;
+                    case "J":
+                        this.block1 = new Block(5, 0, false);
+                        this.block2 = new Block(5, 1, false);
+                        this.block3 = new Block(5, 2, false);
+                        this.block4 = new Block(4, 2, false);
+                        break;
+                    case "T":
+                        this.block1 = new Block(3, 0, false);
+                        this.block2 = new Block(4, 0, false);
+                        this.block3 = new Block(5, 0, false);
+                        this.block4 = new Block(4, 1, false);
+                        break;
+                    default:
+                        throw new Error("Invalid piece type");
+                }
+            }
+        
+            ground() {
+                this.checkGround();
+                if (this._grounded) {
+                    this.block1.ground();
+                    this.block2.ground();
+                    this.block3.ground();
+                    this.block4.ground();
+                    this.arr[this.block1.getY()][this.block1.getX()] = 1;
+                    this.arr[this.block2.getY()][this.block2.getX()] = 1;
+                    this.arr[this.block3.getY()][this.block3.getX()] = 1;
+                    this.arr[this.block4.getY()][this.block4.getX()] = 1;
+                }
+            }
+        
+            checkGround() {
+                this._grounded = this.block1.testFall(this.arr) ||
+                    this.block2.testFall(this.arr) ||
+                    this.block3.testFall(this.arr) ||
+                    this.block4.testFall(this.arr);
+                return this._grounded;
+            }
+        
+            fall() {
+                if (!this.checkGround()) {
+                    this.clear();
+                    this.block1.fall();
+                    this.block2.fall();
+                    this.block3.fall();
+                    this.block4.fall();
+                    this.insert();
+                }
+            }
+        
+            rotate() {
+                const canRotate = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+                    this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+                    this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
+                if (!this.checkGround() && canRotate) {
+                    this.clear();
+                    this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                    this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                    this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                    this.insert();
+                }
+            }
+        
+            shiftR() {
+                if (this.block1.canShiftR(this.arr) && this.block2.canShiftR(this.arr) && this.block3.canShiftR(this.arr) && this.block4.canShiftR(this.arr)) {
+                    this.clear();
+                    this.block1.shiftR();
+                    this.block2.shiftR();
+                    this.block3.shiftR();
+                    this.block4.shiftR();
+                    this.insert();
+                }
+            }
+        
+            shiftL() {
+                if (this.block1.canShiftL(this.arr) && this.block2.canShiftL(this.arr) && this.block3.canShiftL(this.arr) && this.block4.canShiftL(this.arr)) {
+                    this.clear();
+                    this.block1.shiftL();
+                    this.block2.shiftL();
+                    this.block3.shiftL();
+                    this.block4.shiftL();
+                    this.insert();
+                }
+            }
+        
+            drop() {
+                while (!this.checkGround()) {
+                    this.clear();
+                    this.block1.fall();
+                    this.block2.fall();
+                    this.block3.fall();
+                    this.block4.fall();
+                    this.insert();
+                    this.ground();
+                }
+            }
+        
+            insert() {
+                this.arr[this.block1.getY()][this.block1.getX()] = 2;
+                this.arr[this.block2.getY()][this.block2.getX()] = 2;
+                this.arr[this.block3.getY()][this.block3.getX()] = 2;
+                this.arr[this.block4.getY()][this.block4.getX()] = 2;
+            }
+        
+            clear() {
+                this.arr[this.block1.getY()][this.block1.getX()] = 0;
+                this.arr[this.block2.getY()][this.block2.getX()] = 0;
+                this.arr[this.block3.getY()][this.block3.getX()] = 0;
+                this.arr[this.block4.getY()][this.block4.getX()] = 0;
+            }
+        
+            getType() {
+                return this.type;
+            }
+        
+            grounded() {
+                return this._grounded;
+            }
+        }
+    
+        const ROWS = 21;
+        const COLUMNS = 10;
+        const game = [];
+        for (let i = 0; i < ROWS; i++) {
+            game[i] = new Array(COLUMNS).fill(0);
+        }
+        for (let i = 0; i < COLUMNS; i++) {
+            game[ROWS - 1][i] = 1;
+        }
+        
+        let piece;
+        let nextPiece;
+        let heldPiece;
+        let score = 0;
+        let clearedLines = 0;
+        let paused = false;
+        let gameLoopRunning = false;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const nextCanvas = document.getElementById('nextPieceCanvas');
+        const nextCtx = nextCanvas.getContext('2d');
+        const heldCanvas = document.getElementById('heldPieceCanvas');
+        const heldCtx = heldCanvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const linesDisplay = document.getElementById('lines');
+        const pauseMenu = document.getElementById('pauseMenu');
+        const resumeButton = document.getElementById('resumeButton');
+        const restartButton = document.getElementById('restartButton');
+        
+        resumeButton.addEventListener('click', () => {
+            pauseGame();
+        });
+        
+        restartButton.addEventListener('click', () => {
+            resetGame();
+            pauseGame();
+        });
+        
+        function randomPiece() {
+            const pieces = ["O", "I", "L", "J", "S", "Z", "T"];
+            return pieces[Math.floor(Math.random() * pieces.length)];
+        }
+        
+        function setupGame() {
+            piece = new Piece(randomPiece(), game);
+            nextPiece = new Piece(randomPiece(), game);
+            gameLoop();
+            document.addEventListener('keydown', handleKeyPress);
+        }
+        
+        function handleKeyPress(e) {
+            if (paused) return;
+            switch (e.key) {
+                case 'ArrowLeft':
+                    piece.shiftL();
+                    break;
+                case 'ArrowRight':
+                    piece.shiftR();
+                    break;
+                case 'ArrowDown':
+                    piece.fall();
+                    break;
+                case 'ArrowUp':
+                    piece.rotate();
+                    break;
+                case ' ':
+                    piece.drop();
+                    break;
+                case 'Escape':
+                    pauseGame();
+                    break;
+                case 'h':
+                    holdPiece();
+                    break;
+            }
+            drawGame();
+        }
+        
+        function holdPiece() {
+            let holder;
+            try {
+                holder = new Piece(heldPiece.getType(), game);
+            } catch (e) {
+                holder = new Piece(randomPiece(), game);
+            }
+            heldPiece = nextPiece;
+            nextPiece = holder;
+            drawGame();
+        }
+        
+        function gameLoop() {
+            if (!gameLoopRunning) {
+                gameLoopRunning = true;
+                if (!paused) {
+                    piece.ground();
+                    piece.fall();
+                    if (piece.grounded()) {
+                        piece = nextPiece;
+                        nextPiece = new Piece(randomPiece(), game);
+                        piece.ground();
+                        if (piece.grounded()) {
+                            alert("Game Over!");
+                            resetGame();
+                        }
+                    }
+                    const rowsComplete = clearFullLines();
+                    clearedLines += rowsComplete;
+                    score += rowsComplete * 100;
+                    updateDisplay();
+                    drawGame();
+                }
+                setTimeout(() => {
+                    gameLoopRunning = false;
+                    gameLoop();
+                }, 500);
+            }
+        }
+        
+        function clearFullLines() {
+            let rowsCleared = 0;
+            for (let i = 0; i < ROWS - 1; i++) {
+                const full = game[i].every(cell => cell === 1);
+                if (full) {
+                    for (let k = i; k > 0; k--) {
+                        game[k] = [...game[k - 1]];
+                    }
+                    game[0].fill(0);
+                    rowsCleared++;
+                }
+            }
+            return rowsCleared;
+        }
+        
+        function resetGame() {
+            score = 0;
+            clearedLines = 0;
+            for (let i = 0; i < ROWS - 1; i++) {
+                game[i].fill(0);
+            }
+            piece = new Piece(randomPiece(), game);
+            nextPiece = new Piece(randomPiece(), game);
+            updateDisplay();
+            drawGame();
+            gameLoop();
+        }
+        
+        function pauseGame() {
+            paused = !paused;
+            if (paused) {
+                pauseMenu.style.display = 'block';
+            } else {
+                pauseMenu.style.display = 'none';
+                if (!gameLoopRunning) {
+                    gameLoop();
+                }
+            }
+        }
+        
+        function updateDisplay() {
+            scoreDisplay.textContent = `Score: ${score}`;
+            linesDisplay.textContent = `Lines: ${clearedLines}`;
+        }
+        
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < ROWS; i++) {
+                for (let j = 0; j < COLUMNS; j++) {
+                    if (i !== ROWS - 1) {
+                        if (game[i][j] !== 0) {
+                            drawBlock(j, i, 'lightgray');
+                        } else {
+                            drawBlock(j, i, 'black');
+                        }
+                    }
+                }
+            }
+            
+            drawPiecePreview(nextCtx, nextPiece, nextCanvas);
+            drawPiecePreview(heldCtx, heldPiece, heldCanvas);
+        }
+        
+        function drawBlock(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * 30, y * 30, 30, 30);
+            ctx.strokeStyle = 'darkgray';
+            ctx.strokeRect(x * 30, y * 30, 30, 30);
+        }
+        
+        function drawPiecePreview(context, pieceToDraw, previewCanvas){
+            context.clearRect(0,0, previewCanvas.width, previewCanvas.height);
+            if (!pieceToDraw) return;
+            const pieceType = pieceToDraw.getType();
+            let arr;
+        
+            switch (pieceType) {
+                case "O": arr = [[1,1],[1,1]]; break;
+                case "I": arr = [[1],[1],[1],[1]]; break;
+                case "S": arr = [[0,1,1],[1,1,0]]; break;
+                case "Z": arr = [[1,1,0],[0,1,1]]; break;
+                case "L": arr = [[1,0],[1,0],[1,1]]; break;
+                case "J": arr = [[0,1],[0,1],[1,1]]; break;
+                case "T": arr = [[1,1,1],[0,1,0]]; break;
+                default: return;
+            }
+        
+            for (let i = 0; i < arr.length; i++) {
+                for (let j = 0; j < arr[0].length; j++) {
+                    if (arr[i][j] === 1) {
+                        context.fillStyle = 'lightgray';
+                        context.fillRect(j * 30, i * 30, 30, 30);
+                        context.strokeStyle = 'black';
+                        context.strokeRect(j* 30, i*30, 30, 30);
+                    }
+                }
+            }
+        }
+        
+        setupGame();
+    </script>
+</body>
+</html>
