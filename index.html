@@ -498,7 +498,7 @@
                 setTimeout(() => {
                     gameLoopRunning = false;
                     gameLoop();
-                }, Math.max(100, 500 - linesCleared * 10));
+                }, Math.max(100, 500 - 10 * clearedLines));
             }
         }
 
