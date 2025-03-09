@@ -326,6 +326,16 @@
             "T": "purple",
             "Z": "red"
         };
+        const colorNameToHex = {
+            "cyan": "#00FFFF",
+            "blue": "#0000FF",
+            "orange": "#FFA500",
+            "yellow": "#FFFF00",
+            "green": "#008000",
+            "purple": "#800080",
+            "red": "#FF0000",
+            "black": "#000000" // Add black here
+        };
 
         document.addEventListener('keydown', function(event) { // Prevents default scrolling on arrow keys.
             if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === ' ') {
@@ -487,33 +497,41 @@
             scoreDisplay.textContent = `Score: ${score}`; // Updates the score display with the current score.
             linesDisplay.textContent = `Lines: ${clearedLines}`; // Updates the lines display with the current number of cleared lines.
         }
-
+        // *experimental area*
         function drawGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clears the entire game canvas.
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < ROWS; i++) {
                 for (let j = 0; j < COLUMNS; j++) {
-                    if (i !== ROWS - 1) { // Prevents drawing on the bottom row, which is the floor.
-                        if (game[i][j] !== 0 && colorBoard[i][j]) { // Checks if the cell is occupied and has a color.
-                            drawBlock(j, i, colorBoard[i][j]); // Draws the block with its color.
+                    if (i !== ROWS - 1) {
+                        if (game[i][j] !== 0 && colorBoard[i][j]) {
+                            drawBlock(j, i, colorNameToHex[colorBoard[i][j]]);
                         } else {
-                            drawBlock(j, i, 'black'); // Draws an empty black block if the cell is empty.
+                            drawBlock(j, i, 'black');
                         }
                     }
                 }
             }
 
-            drawPiecePreview(nextCtx, nextPiece, nextCanvas); // Draws the next piece preview.
-            drawPiecePreview(heldCtx, heldPiece, heldCanvas); // Draws the held piece preview.
+            drawPiecePreview(nextCtx, nextPiece, nextCanvas);
+            drawPiecePreview(heldCtx, heldPiece, heldCanvas);
         }
 
         function drawBlock(x, y, color) {
-            ctx.fillStyle = color; // Sets the fill color for the block.
-            ctx.fillRect(x * 30, y * 30, 30, 30); // Fills the block with the specified color.
-            ctx.strokeStyle = 'darkgray'; // Sets the stroke color for the block's border.
-            ctx.strokeRect(x * 30, y * 30, 30, 30); // Draws the block's border.
+            const blockSize = 30;
+            if (color === 'black') {
+                ctx.fillStyle = color;
+                ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                ctx.strokeStyle = 'darkgray';
+                ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+            } else {
+                const gradient = createBlockGradient(ctx, x * blockSize, y * blockSize, color, blockSize);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                ctx.strokeStyle = 'darkgray';
+                ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+            }
         }
-
-        // *experimental area*
+        
         function createBlockGradient(ctx, x, y, color, blockSize) {
             const gradient = ctx.createLinearGradient(x, y, x + blockSize, y + blockSize);
             const lightColor = lightenColor(color, 30);
