@@ -490,8 +490,8 @@ function drawBlock(x, y, color) {
 
 function createBlockGradient(ctx, x, y, color, blockSize) {
     const gradient = ctx.createLinearGradient(x, y, x + blockSize, y + blockSize);
-    const lightColor = lightenColor(color, 255);
-    const darkColor = darkenColor(color, 255);
+    const lightColor = lightenColor(color, 100);
+    const darkColor = darkenColor(color, 100);
     gradient.addColorStop(0, lightColor);
     gradient.addColorStop(1, darkColor);
     return gradient;
