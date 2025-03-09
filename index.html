@@ -493,7 +493,7 @@
             for (let i = 0; i < ROWS; i++) {
                 for (let j = 0; j < COLUMNS; j++) {
                     if (i !== ROWS - 1) {
-                        if (game[i][j] !== 0 && colorBoard[i][j]) 
+                        if (game[i][j] !== 0 && colorBoard[i][j]) {
                             if (pieceColors[colorBoard[i][j]]) {
                                 drawBlock(j, i, pieceColors[colorBoard[i][j]]);
                             } else {
