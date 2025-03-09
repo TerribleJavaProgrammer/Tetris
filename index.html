@@ -534,8 +534,8 @@
         
         function createBlockGradient(ctx, x, y, color, blockSize) {
             const gradient = ctx.createLinearGradient(x, y, x + blockSize, y + blockSize);
-            const lightColor = lightenColor(color, 30);
-            const darkColor = darkenColor(color, 30); 
+            const lightColor = lightenColor(color, 60);
+            const darkColor = darkenColor(color, 60); 
             gradient.addColorStop(0, lightColor);
             gradient.addColorStop(1, darkColor);
             return gradient;
