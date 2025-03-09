@@ -1,4 +1,4 @@
-import Piece from '/Piece.js';
+import Piece from './Piece.js'; // not from root directory!
 
 const ROWS = 21; // Number of rows in the game board.
 const COLUMNS = 10; // Number of columns in the game board.
