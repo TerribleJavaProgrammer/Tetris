@@ -531,7 +531,12 @@
         }
         
         function lightenColor(color, amount) {
+            console.log("lightenColor input:", color);
             let rgb = hexToRgb(color);
+            if (rgb === null) {
+                console.error("Invalid hex color in lightenColor:", color);
+                return "#000000";
+            }
             rgb.r = Math.min(255, rgb.r + amount);
             rgb.g = Math.min(255, rgb.g + amount);
             rgb.b = Math.min(255, rgb.b + amount);
@@ -539,7 +544,12 @@
         }
         
         function darkenColor(color, amount) {
+            console.log("darkenColor input:", color);
             let rgb = hexToRgb(color);
+            if (rgb === null) {
+                console.error("Invalid hex color in darkenColor:", color);
+                return "#000000";
+            }
             rgb.r = Math.max(0, rgb.r - amount);
             rgb.g = Math.max(0, rgb.g - amount);
             rgb.b = Math.max(0, rgb.b - amount);
