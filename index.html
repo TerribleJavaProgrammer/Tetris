@@ -495,7 +495,12 @@
                 for (let j = 0; j < COLUMNS; j++) {
                     if (i !== ROWS - 1) {
                         if (game[i][j] !== 0 && colorBoard[i][j]) {
-                            drawBlock(j, i, pieceColors[colorBoard[i][j]]);
+                            if(pieceColors[colorBoard[i][j]]){
+                                drawBlock(j, i, pieceColors[colorBoard[i][j]]);
+                            } else {
+                                console.error("Invalid colorBoard value:", colorBoard[i][j]);
+                                drawBlock(j,i, "black");
+                            }
                         } else {
                             drawBlock(j, i, 'black');
                         }
@@ -557,7 +562,7 @@
         
             if (isNaN(rgb.r) || isNaN(rgb.g) || isNaN(rgb.b)) {
                 console.error("Invalid RGB values:", rgb);
-                return "#000000"; // Return black as a fallback
+                return "#000000";
             }
         
             if (r.length === 1) r = "0" + r;
