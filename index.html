@@ -476,8 +476,8 @@
             } catch (e) {
                 holder = new Piece(randomPiece(), game);
             }
-            heldPiece = nextPiece;
-            nextPiece = holder;
+            heldPiece = new Piece(nextPiece.getType(), game);
+            nextPiece = new Piece(holder.getType(), game);
             drawGame();
         }
 
