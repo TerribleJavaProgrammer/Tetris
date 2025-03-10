@@ -1,50 +1,78 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
+:root {
+    --bg-color: #282c34;
+    --canvas-bg: #1e1e1e;
+    --border-color: #2b2b2b;
+    --info-bg: #383e4a;
+    --text-color: #ffffff;
+}
+
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: #282c34;
-    color: #ffffff;
+    align-items: flex-start;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Orbitron', sans-serif;
     margin: 0;
     padding: 20px;
 }
 
+.game-area {
+    display: flex;
+    align-items: flex-start;
+}
+
 canvas {
-    border: 4px solid #2b2b2b;
-    background-color: #1e1e1e;
+    border: 4px solid var(--border-color);
+    background-color: var(--canvas-bg);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-#gameCanvas {
-    margin-bottom: 20px;
-}
-
-.info-container, .preview-container {
+.info-container {
     display: flex;
     justify-content: space-around;
     width: 300px;
     margin-bottom: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.info-box, .preview-box {
+.preview-box {
     text-align: center;
-    background-color: #383e4a;
+    background-color: var(--info-bg);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: translate(0px, 150px);
+}
+
+.info-box {
+    text-align: center;
+    background-color: var(--info-bg);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: translate(164px, 30px);
+}
+
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
 }
 
 #startMenu, #pauseMenu, #lossMenu {
-    position: absolute;
-    top: 25%;
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-150px, -300px);
     background-color: #4a5568;
-    border: 2px solid #2b2b2b;
+    border: 2px solid var(--border-color);
     padding: 20px;
     z-index: 10;
     border-radius: 10px;
@@ -54,8 +82,8 @@ canvas {
 
 button {
     font-family: 'Orbitron', sans-serif;
-    background-color: #2b2b2b;
-    color: #ffffff;
+    background-color: var(--border-color);
+    color: var(--text-color);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -69,4 +97,34 @@ button:hover {
 
 .hidden {
     display: none !important;
+}
+
+@media (max-width: 600px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-area {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .preview-container {
+        margin-left: 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    #gameCanvas {
+        margin-left: 0;
+    }
+
+    .info-container {
+        position: static;
+        transform: none;
+        left: auto;
+        width: 100%;
+    }
 }
