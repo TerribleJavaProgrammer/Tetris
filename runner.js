@@ -485,7 +485,7 @@ function drawGame() {
 }
 
 function drawBlock(x, y, color) {
-    const blockSize = 30;
+    const blockSize = 35;
     if (color == 'black') {
         ctx.fillStyle = color;
         ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
@@ -577,7 +577,7 @@ function drawPiecePreview(context, pieceToDraw, previewCanvas) {
         for (let j = 0; j < arr[0].length; j++) {
             if (arr[i][j] == 1) {
                 let color = colorNameToHex[pieceColors[pieceType]];
-                const blockSize = 30;
+                const blockSize = 35;
                 if (color == 'black') {
                     context.fillStyle = color;
                     context.fillRect(j * blockSize, i * blockSize, blockSize, blockSize);
