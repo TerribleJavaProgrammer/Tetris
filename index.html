@@ -6,41 +6,38 @@
     <link rel="icon" href="tetris.ico" type="image/x-icon">
 </head>
 <body>
-    <canvas id="gameCanvas" width="300" height="600"></canvas>
-
     <div class="info-container">
         <div class="info-box">
             <div id="score">Score: 0</div>
             <div id="lines">Lines: 0</div>
         </div>
     </div>
-
-    <div class="preview-container">
-        <div class="preview-box">
-            <div>Next:</div>
-            <canvas id="nextPieceCanvas" width="120" height="120"></canvas>
-        </div>
-        <div class="preview-box">
-            <div>Held:</div>
-            <canvas id="heldPieceCanvas" width="120" height="120"></canvas>
+    <div class="game-area">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+        <div class="preview-container">
+            <div class="preview-box">
+                <div>Next:</div>
+                <canvas id="nextPieceCanvas" width="120" height="120"></canvas>
+            </div>
+            <div class="preview-box">
+                <div>Held:</div>
+                <canvas id="heldPieceCanvas" width="120" height="120"></canvas>
+            </div>
         </div>
     </div>
-
     <div id="startMenu" class="hidden">
         <h2>Tetris</h2>
         <button id="startButton">Start</button>
     </div>
-
     <div id="pauseMenu" class="hidden">
         <h2>Paused</h2>
         <button id="resumeButton">Resume</button>
         <button id="restartButton">Restart</button>
     </div>
-
     <div id="lossMenu" class="hidden">
         <h2>You Lost</h2>
         <button id="resetButton">Restart</button>
     </div>
-    <script src="runner.js" type = "module"></script>
+    <script src="runner.js" type="module"></script>
 </body>
 </html>
