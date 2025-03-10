@@ -70,11 +70,39 @@ canvas {
     margin-left: 20px;
 }
 
-#startMenu, #pauseMenu, #lossMenu {
+#startMenu {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-125%, -150%);
+    transform: translate(-131%, -150%);
+    background-color: #4a5568;
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    z-index: 10;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#lossMenu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-110%, -150%);
+    background-color: #4a5568;
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    z-index: 10;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#pauseMenu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-91%, -150%);
     background-color: #4a5568;
     border: 2px solid var(--border-color);
     padding: 20px;
