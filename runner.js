@@ -353,7 +353,7 @@ function handleKeyPress(e) {
         case 'Escape':
             pauseGame();
             break;
-        case 'h':
+        case 'c':
             holdPiece();
             break;
     }
