@@ -291,6 +291,21 @@ const colorNameToHex = {
     "black": "#000000"
 };
 
+function scaleGame() {
+    const container = document.getElementById('gameContainer');
+    const targetWidth = 600;
+    const targetHeight = 800;
+
+    const scaleX = window.innerWidth / targetWidth;
+    const scaleY = window.innerHeight / targetHeight;
+    const scale = Math.min(scaleX, scaleY, 10);
+
+    container.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', scaleGame);
+scaleGame();
+
 document.addEventListener('keydown', function(event) {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === ' ') {
         event.preventDefault();
