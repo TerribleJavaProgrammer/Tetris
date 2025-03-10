@@ -309,6 +309,7 @@ restartButton.addEventListener('click', () => {
 startButton.addEventListener('click', () => {
     gameLoop();
     startMenu.classList.add('hidden');
+    document.addEventListener('keydown', handleKeyPress);
 });
 
 resetButton.addEventListener('click', () => {
@@ -329,7 +330,6 @@ function setupGame() {
     piece = new Piece(randomPiece(), game, colorBoard);
     nextPiece = new Piece(randomPiece(), game, colorBoard);
     startMenu.classList.remove('hidden');
-    document.addEventListener('keydown', handleKeyPress);
 }
 
 function handleKeyPress(e) {
