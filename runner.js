@@ -452,7 +452,6 @@ function updateDisplay() {
     linesDisplay.textContent = `Lines: ${clearedLines}`;
 }
 
-// *experimental area*
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < ROWS; i++) {
@@ -562,10 +561,20 @@ function drawPiecePreview(context, pieceToDraw, previewCanvas) {
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[0].length; j++) {
             if (arr[i][j] == 1) {
-                context.fillStyle = 'black';
-                context.fillRect(j * 30, i * 30, 30, 30);
-                context.strokeStyle = 'black';
-                context.strokeRect(j * 30, i * 30, 30, 30);
+                let color = colorNameToHex[pieceColors[pieceType]];
+                const blockSize = 30;
+                if (color == 'black') {
+                    context.fillStyle = color;
+                    context.fillRect(j * blockSize, i * blockSize, blockSize, blockSize);
+                    context.strokeStyle = 'darkgray';
+                    context.strokeRect(j * blockSize, i * blockSize, blockSize, blockSize);
+                } else {
+                    const gradient = createBlockGradient(context, j * blockSize, i * blockSize, color, blockSize);
+                    context.fillStyle = gradient;
+                    context.fillRect(j * blockSize, i * blockSize, blockSize, blockSize);
+                    context.strokeStyle = 'black';
+                    context.strokeRect(j * blockSize, i * blockSize, blockSize, blockSize);
+                }
             }
         }
     }
