@@ -38,19 +38,19 @@ export function updateDisplay(score, clearedLines) {
     linesDisplay.textContent = `Lines: ${clearedLines}`;
 }
 
-function drawBlock(x, y, color, ctx) {
+function drawBlock(x, y, color, context) {
     const blockSize = 35;
     if (color == 'black') {
-        ctx.fillStyle = color;
-        ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-        ctx.strokeStyle = 'darkgray';
-        ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        context.fillStyle = color;
+        context.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        context.strokeStyle = 'darkgray';
+        context.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     } else {
-        const gradient = createBlockGradient(ctx, x * blockSize, y * blockSize, color, blockSize);
-        ctx.fillStyle = gradient;
-        ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-        ctx.strokeStyle = 'black';
-        ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        const gradient = createBlockGradient(context, x * blockSize, y * blockSize, color, blockSize);
+        context.fillStyle = gradient;
+        context.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        context.strokeStyle = 'black';
+        context.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     }
 }
 
@@ -89,7 +89,7 @@ function drawPiecePreview(piece, context, canvas) {
         for (let j = 0; j < arr[0].length; j++) {
             if (arr[i][j] == 1) {
                 let color = colorNameToHex[pieceColors[pieceType]];
-                drawBlock(j * 35, i * 35, color, ctx);
+                drawBlock(j, i, color, context);
             }
         }
     }
