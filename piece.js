@@ -1,10 +1,15 @@
 import { Block } from './block.js';
+import {
+  game,
+  colorBoard,
+  pieceColors,
+} from './constants.js';
 
 export class Piece {
-    constructor(type, arr, colorArr, pieceColors) {
+    constructor(type) {
         this.type = type;
-        this.arr = arr;
-        this.colorArr = colorArr;
+        this.arr = game;
+        this.colorArr = colorBoard;
         this._grounded = false;
         this.pieceColors = pieceColors;
         switch (type) {
