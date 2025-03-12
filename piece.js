@@ -13,6 +13,8 @@ export class Piece {
         this._grounded = false;
         this.pieceColors = pieceColors;
         switch (type) {
+            case "NONE":
+                break;
             case "O":
                 this.block1 = new Block(4, 0, false);
                 this.block2 = new Block(5, 0, false);
