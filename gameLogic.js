@@ -25,7 +25,6 @@ export function gameLoop() {
             piece.ground();
             piece.fall();
             if (piece.grounded()) {
-                score += 10;
                 piece = nextPiece;
                 nextPiece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
                 piece.ground();
