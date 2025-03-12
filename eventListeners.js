@@ -60,18 +60,6 @@ function handleKeyPress(e) {
         case 'ArrowUp':
             piece.rotate();
             break;
-        case 'a':
-            piece.shiftL();
-            break;
-        case 'd':
-            piece.shiftR();
-            break;
-        case 's':
-            piece.fall();
-            break;
-        case 'w':
-            piece.rotate();
-            break;
         case ' ':
             piece.drop();
             break;
