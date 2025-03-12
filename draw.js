@@ -22,9 +22,9 @@ export function drawGame(nextPiece, heldPiece) {
         for (let j = 0; j < COLUMNS; j++) {
             if (i !== ROWS - 1) {
                 if (game[i][j] !== 0 && colorBoard[i][j]) {
-                    drawBlock(j, i, colorNameToHex[colorBoard[i][j]], ctx);
+                    drawBlock(j, i - 2, colorNameToHex[colorBoard[i][j]], ctx);
                 } else {
-                    drawBlock(j, i, 'black', ctx);
+                    drawBlock(j, i - 2, 'black', ctx);
                 }
             }
         }
