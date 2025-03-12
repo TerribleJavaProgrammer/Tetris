@@ -14,6 +14,7 @@ export class Piece {
         this.pieceColors = pieceColors;
         switch (type) {
             case "NONE":
+                this.type = null;
                 break;
             case "O":
                 this.block1 = new Block(4, 0, false);
