@@ -96,6 +96,7 @@ export function resetGame() {
     clearedLines = 0;
     piece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
     nextPiece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
+    heldPiece = new Piece("NONE");
     for (let i = 0; i < ROWS - 1; i++) {
         game[i].fill(0);
         colorBoard[i].fill('black');
