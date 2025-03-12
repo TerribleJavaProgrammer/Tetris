@@ -4,9 +4,7 @@ import {
   startMenu,
   startButton,
   lossMenu,
-  resetButton,
-  ROWS,
-  COLUMNS
+  resetButton
 } from './constants.js';
 import { gameLoop, piece, nextPiece, heldPiece, paused, gameLoopRunning, holdPiece, pauseGame, resetGame, scaleGame, pauseWithoutPopup } from './gameLogic.js';
 import { drawGame } from './draw.js';
