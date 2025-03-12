@@ -58,7 +58,7 @@ export class Block {
     
     testIndex(x, y, arr) {
         try {
-            return arr[y] && (arr[y][x] === 0 || arr[y][x] === 2);
+            return arr[y] && (arr[y][x] === 0 || arr[y][x] === 2) && (arr[y][x] != 1) && (0 < x < 10) && (y + 1 < 22) && (y > 0);
         } catch (e) {
             return false;
         }
