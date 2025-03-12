@@ -7,6 +7,7 @@ import {
 
 export class Piece {
     constructor(type) {
+        this.dropped = false;
         this.type = type;
         this.arr = game;
         this.colorArr = colorBoard;
@@ -65,7 +66,7 @@ export class Piece {
     
     ground() {
         this.checkGround();
-        if (this._grounded) {
+        if (this._grounded && !this.dropped) {
             this.block1.ground();
             this.block2.ground();
             this.block3.ground();
@@ -85,12 +86,13 @@ export class Piece {
         this._grounded = this.block1.testFall(this.arr) ||
             this.block2.testFall(this.arr) ||
             this.block3.testFall(this.arr) ||
-            this.block4.testFall(this.arr);
+            this.block4.testFall(this.arr) ||
+            this.dropped;
         return this._grounded;
     }
     
     fall() {
-        if (!this.checkGround()) {
+        if (!this.checkGround() && !this.dropped) {
             this.clear();
             this.block1.fall();
             this.block2.fall();
@@ -104,7 +106,7 @@ export class Piece {
         const canRotate = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
             this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
             this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-        if (!this.checkGround() && canRotate) {
+        if (!this.checkGround() && canRotate && !this.dropped) {
             this.clear();
             this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
             this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
@@ -114,7 +116,7 @@ export class Piece {
     }
     
     shiftR() {
-        if (this.block1.canShiftR(this.arr) && this.block2.canShiftR(this.arr) && this.block3.canShiftR(this.arr) && this.block4.canShiftR(this.arr)) {
+        if (this.block1.canShiftR(this.arr) && this.block2.canShiftR(this.arr) && this.block3.canShiftR(this.arr) && this.block4.canShiftR(this.arr) && !this.dropped) {
             this.clear();
             this.block1.shiftR();
             this.block2.shiftR();
@@ -125,7 +127,7 @@ export class Piece {
     }
     
     shiftL() {
-        if (this.block1.canShiftL(this.arr) && this.block2.canShiftL(this.arr) && this.block3.canShiftL(this.arr) && this.block4.canShiftL(this.arr)) {
+        if (this.block1.canShiftL(this.arr) && this.block2.canShiftL(this.arr) && this.block3.canShiftL(this.arr) && this.block4.canShiftL(this.arr) && !this.dropped) {
             this.clear();
             this.block1.shiftL();
             this.block2.shiftL();
@@ -145,6 +147,7 @@ export class Piece {
             this.insert();
             this.ground();
         }
+        this.dropped = true;
     }
     
     insert() {
