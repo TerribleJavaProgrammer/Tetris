@@ -103,15 +103,86 @@ export class Piece {
     }
     
     rotate() {
-        const canRotate = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+        const canRotateNorm = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
             this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
             this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-        if (!this.checkGround() && canRotate && !this.dropped) {
-            this.clear();
-            this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-            this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-            this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-            this.insert();
+        
+        const canRotateShiftedLeft = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 1, this.block1.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 1, this.block3.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 1, this.block4.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr);
+
+        const canRotateShiftedLeft2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 2, this.block1.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 2, this.block3.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 2, this.block4.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr);
+        
+        const canRotateShiftedRight = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 1, this.block1.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 1, this.block3.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 1, this.block4.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr);
+        
+        const canRotateShiftedRight2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 2, this.block1.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 2, this.block3.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 2, this.block4.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr);
+        
+        if (!this.checkGround() && !this.dropped) {
+            if (canRotateNorm) {
+                this.clear();
+                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                this.insert();
+            }
+            else if (canRotateShiftedLeft) {
+                this.clear();
+                this.block1.shiftL();
+                this.block2.shiftL();
+                this.block3.shiftL();
+                this.block4.shiftL();
+                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                this.insert();
+            }
+            else if (canRotateShiftedRight) {
+                this.clear();
+                this.block1.shiftR();
+                this.block2.shiftR();
+                this.block3.shiftR();
+                this.block4.shiftR();
+                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                this.insert();
+            }
+            else if (canRotateShiftedLeft2) {
+                this.clear();
+                this.block1.shiftL();
+                this.block2.shiftL();
+                this.block3.shiftL();
+                this.block4.shiftL();
+                this.block1.shiftL();
+                this.block2.shiftL();
+                this.block3.shiftL();
+                this.block4.shiftL();
+                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                this.insert();
+            }
+            else if (canRotateShiftedRight2) {
+                this.clear();
+                this.block1.shiftR();
+                this.block2.shiftR();
+                this.block3.shiftR();
+                this.block4.shiftR();
+                this.block1.shiftR();
+                this.block2.shiftR();
+                this.block3.shiftR();
+                this.block4.shiftR();
+                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+                this.insert();
+            }
         }
     }
     
@@ -151,25 +222,29 @@ export class Piece {
     }
     
     insert() {
-        this.arr[this.block1.getY()][this.block1.getX()] = 2;
-        this.arr[this.block2.getY()][this.block2.getX()] = 2;
-        this.arr[this.block3.getY()][this.block3.getX()] = 2;
-        this.arr[this.block4.getY()][this.block4.getX()] = 2;
-        this.colorArr[this.block1.getY()][this.block1.getX()] = this.pieceColors[this.type];
-        this.colorArr[this.block2.getY()][this.block2.getX()] = this.pieceColors[this.type];
-        this.colorArr[this.block3.getY()][this.block3.getX()] = this.pieceColors[this.type];
-        this.colorArr[this.block4.getY()][this.block4.getX()] = this.pieceColors[this.type];
+        try {
+            this.arr[this.block1.getY()][this.block1.getX()] = 2;
+            this.arr[this.block2.getY()][this.block2.getX()] = 2;
+            this.arr[this.block3.getY()][this.block3.getX()] = 2;
+            this.arr[this.block4.getY()][this.block4.getX()] = 2;
+            this.colorArr[this.block1.getY()][this.block1.getX()] = this.pieceColors[this.type];
+            this.colorArr[this.block2.getY()][this.block2.getX()] = this.pieceColors[this.type];
+            this.colorArr[this.block3.getY()][this.block3.getX()] = this.pieceColors[this.type];
+            this.colorArr[this.block4.getY()][this.block4.getX()] = this.pieceColors[this.type];
+        } catch (e) {}
     }
     
     clear() {
-        this.arr[this.block1.getY()][this.block1.getX()] = 0;
-        this.arr[this.block2.getY()][this.block2.getX()] = 0;
-        this.arr[this.block3.getY()][this.block3.getX()] = 0;
-        this.arr[this.block4.getY()][this.block4.getX()] = 0;
-        this.colorArr[this.block1.getY()][this.block1.getX()] = 'black';
-        this.colorArr[this.block2.getY()][this.block2.getX()] = 'black';
-        this.colorArr[this.block3.getY()][this.block3.getX()] = 'black';
-        this.colorArr[this.block4.getY()][this.block4.getX()] = 'black';
+        try {
+            this.arr[this.block1.getY()][this.block1.getX()] = 0;
+            this.arr[this.block2.getY()][this.block2.getX()] = 0;
+            this.arr[this.block3.getY()][this.block3.getX()] = 0;
+            this.arr[this.block4.getY()][this.block4.getX()] = 0;
+            this.colorArr[this.block1.getY()][this.block1.getX()] = 'black';
+            this.colorArr[this.block2.getY()][this.block2.getX()] = 'black';
+            this.colorArr[this.block3.getY()][this.block3.getX()] = 'black';
+            this.colorArr[this.block4.getY()][this.block4.getX()] = 'black';
+        } catch (e) {}
     }
     
     getType() {
