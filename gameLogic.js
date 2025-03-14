@@ -29,6 +29,7 @@ export function gameLoop() {
             if (piece.grounded()) {
                 piece = nextPiece;
                 nextPiece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
+                score += 20;
                 piece.ground();
                 if (piece.grounded()) {
                     lossMenu.classList.remove('hidden');
