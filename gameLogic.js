@@ -10,6 +10,8 @@ import {
   pieces
 } from './constants.js';
 
+import { debugString } from './debugStringHandler.js';
+
 export let piece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
 export let nextPiece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
 export let heldPiece = null;
@@ -85,6 +87,7 @@ export function pauseGame() {
             gameLoop();
         }
     }
+    console.log(debugString);
 }
 
 export function pauseWithoutPopup() {
