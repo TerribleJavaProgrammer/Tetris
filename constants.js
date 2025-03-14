@@ -6,6 +6,7 @@ export const heldCanvas = document.getElementById('heldPieceCanvas');
 export const heldCtx = heldCanvas.getContext('2d');
 export const scoreDisplay = document.getElementById('score');
 export const linesDisplay = document.getElementById('lines');
+export const highestDisplay = document.getElementById('highest');
 export const pauseMenu = document.getElementById('pauseMenu');
 export const resumeButton = document.getElementById('resumeButton');
 export const restartButton = document.getElementById('restartButton');
