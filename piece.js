@@ -64,6 +64,21 @@ export class Piece {
         }
     }
     
+    setBlocks(block1, block2, block3, block4) {
+        this.block1.set(block1.getX(), block1.getY());
+        this.block2.set(block2.getX(), block2.getY());
+        this.block3.set(block3.getX(), block3.getY());
+        this.block4.set(block4.getX(), block4.getY());
+    }
+
+    getBlocks() {
+        return [this.block1, this.block2, this.block3, this.block4];
+    }
+
+    setNewArr() {
+        this.arr = JSON.parse(JSON.stringify(game));
+    }
+
     ground() {
         this.checkGround();
         if (this._grounded && !this.dropped) {
@@ -251,6 +266,15 @@ export class Piece {
         } catch (e) {}
     }
     
+    getShadowCoords() {
+        let tempPiece = new Piece(this.type);
+        tempPiece.setNewArr();
+        tempPiece.setBlocks(this.block1, this.block2, this.block3, this.block4);
+        tempPiece.drop();
+        let tempBlocks = tempPiece.getBlocks();
+        return [tempBlocks[0].getX(), tempBlocks[0].getY() - 1, tempBlocks[1].getX(), tempBlocks[1].getY() - 1, tempBlocks[2].getX(), tempBlocks[2].getY() - 1, tempBlocks[3].getX(), tempBlocks[3].getY() - 1];
+    }
+
     getType() {
         return this.type;
     }
