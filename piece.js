@@ -107,22 +107,46 @@ export class Piece {
             this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
             this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
         
-        const canRotateShiftedLeft = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 1, this.block1.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 1, this.block3.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 1, this.block4.getX() - 1 - this.block2.getX() - 1 + this.block2.getY(), this.arr);
+        if (canRotateNorm == false) {
+            console.log("above for rotatenorm false!");
+        }
 
-        const canRotateShiftedLeft2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 2, this.block1.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 2, this.block3.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 2, this.block4.getX() - 2 - this.block2.getX() - 2 + this.block2.getY(), this.arr);
+        const canRotateShiftedLeft = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 1, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block2.testIndex(this.block2.getX() - 1, this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 1, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 1, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
+
+        if (canRotateShiftedLeft == false) {
+            console.log("above for shiftL1 false!");
+        }
+
+        const canRotateShiftedLeft2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 2, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block2.testIndex(this.block2.getX() - 2, this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 2, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 2, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
         
-        const canRotateShiftedRight = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 1, this.block1.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 1, this.block3.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 1, this.block4.getX() + 1 - this.block2.getX() + 1 + this.block2.getY(), this.arr);
+        if (canRotateShiftedLeft2 == false) {
+            console.log("above for shiftL2 false!");
+        }
+
+        const canRotateShiftedRight = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 1, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block2.testIndex(this.block2.getX() + 1, this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 1, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 1, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
         
-        const canRotateShiftedRight2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 2, this.block1.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 2, this.block3.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 2, this.block4.getX() + 2 - this.block2.getX() + 2 + this.block2.getY(), this.arr);
-        
+        if (canRotateShiftedRight == false) {
+            console.log("above for shiftR1 false!");
+        }
+
+        const canRotateShiftedRight2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 2, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block2.testIndex(this.block2.getX() + 2, this.block2.getY(), this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 2, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 2, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
+
+        if (canRotateShiftedRight == false) {
+            console.log("above for shiftR2 false!");
+        }
+
         if (!this.checkGround() && !this.dropped) {
             if (canRotateNorm) {
                 this.clear();
