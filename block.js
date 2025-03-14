@@ -44,22 +44,37 @@ export class Block {
     
     canShiftL(arr) {
         if (this.x - 1 >= 0) {
-            return arr[this.y] && (arr[this.y][this.x - 1] === 0 || arr[this.y][this.x - 1] === 2);
+            return arr[this.y] && (arr[this.y][this.x - 1] != 1);
         }
         return false;
     }
     
     canShiftR(arr) {
         if (this.x + 1 < 10) {
-            return arr[this.y] && (arr[this.y][this.x + 1] === 0 || arr[this.y][this.x + 1] === 2);
+            return arr[this.y] && (arr[this.y][this.x + 1] != 1);
         }
         return false;
     }
     
     testIndex(x, y, arr) {
         try {
-            return arr[y] && (arr[y][x] === 0 || arr[y][x] === 2) && (arr[y][x] != 1) && (0 < x < 10) && (y + 1 < 22) && (y > 0);
+            if (!(arr[y] && (arr[y][x] != 1) && (0 <= x) && (x < 10) && (y + 1 <= 22) && (y >= 0))) {
+                console.log(!arr[y]);
+                console.log(arr[y][x]);
+                console.log(0 <= x);
+                console.log(x < 10);
+                console.log(y + 1 <= 22);
+                console.log(y >= 0);
+                return false;
+            }
+            return true;
         } catch (e) {
+                try{console.log(!arr[y]);} catch(e) {console.log("error; y = " + y + " error is: " + e);}
+                try{console.log(arr[y][x]);} catch(e) {console.log("error");}
+                try{console.log(0 <= x);} catch(e) {console.log("error");}
+                try{console.log(x < 10);} catch(e) {console.log("error");}
+                try{console.log(y + 1 <= 22);} catch(e) {console.log("error");}
+                try{console.log(y >= 0);} catch(e) {console.log("error");}
             return false;
         }
     }
