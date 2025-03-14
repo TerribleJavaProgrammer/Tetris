@@ -15,6 +15,7 @@ import {
   pieceColors,
   colorNameToHex
 } from './constants.js';
+import { updateDebugString } from './debugStringHandler.js';
 
 export function drawGame(nextPiece, heldPiece) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -29,6 +30,7 @@ export function drawGame(nextPiece, heldPiece) {
             }
         }
     }
+    updateDebugString();
     drawPiecePreview(nextPiece, nextCtx, nextCanvas);
     drawPiecePreview(heldPiece, heldCtx, heldCanvas);
 }
