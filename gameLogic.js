@@ -32,7 +32,7 @@ export function gameLoop() {
                 nextPiece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
                 score += 20;
                 piece.ground();
-                updateHighScore();
+                updateHighScore(score);
                 if (piece.grounded()) {
                     lossMenu.classList.remove('hidden');
                     paused = !paused;
