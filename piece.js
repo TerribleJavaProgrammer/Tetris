@@ -103,113 +103,93 @@ export class Piece {
     }
     
     rotate() {
-        const canRotateNorm = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-        
-        if (canRotateNorm == false) {
-            console.log("above for rotatenorm false!");
-        }
-
-        const canRotateShiftedLeft = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 1, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block2.testIndex(this.block2.getX() - 1, this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 1, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 1, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-
-        if (canRotateShiftedLeft == false) {
-            console.log("above for shiftL1 false!");
-        }
-
-        const canRotateShiftedLeft2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() - 2, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block2.testIndex(this.block2.getX() - 2, this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() - 2, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() - 2, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-        
-        if (canRotateShiftedLeft2 == false) {
-            console.log("above for shiftL2 false!");
-        }
-
-        const canRotateShiftedRight = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 1, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block2.testIndex(this.block2.getX() + 1, this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 1, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 1, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-        
-        if (canRotateShiftedRight == false) {
-            console.log("above for shiftR1 false!");
-        }
-
-        const canRotateShiftedRight2 = this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + 2, this.block1.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block2.testIndex(this.block2.getX() + 2, this.block2.getY(), this.arr) &&
-            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + 2, this.block3.getX() - this.block2.getX() + this.block2.getY(), this.arr) &&
-            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + 2, this.block4.getX() - this.block2.getX() + this.block2.getY(), this.arr);
-
-        if (canRotateShiftedRight == false) {
-            console.log("above for shiftR2 false!");
-        }
-
         if (!this.checkGround() && !this.dropped) {
-            if (canRotateNorm) {
-                this.clear();
-                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-                this.insert();
+            if (this.checkRotate(0, 0)) {
+                this.rotationHelper(0, 0);
             }
-            else if (canRotateShiftedLeft) {
-                this.clear();
-                this.block1.shiftL();
-                this.block2.shiftL();
-                this.block3.shiftL();
-                this.block4.shiftL();
-                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-                this.insert();
+            else if (this.checkRotate(-1, 0)) {
+                this.rotationHelper(-1, 0);
             }
-            else if (canRotateShiftedRight) {
-                this.clear();
-                this.block1.shiftR();
-                this.block2.shiftR();
-                this.block3.shiftR();
-                this.block4.shiftR();
-                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-                this.insert();
+            else if (this.checkRotate(1, 0)) {
+                this.rotationHelper(1, 0);
             }
-            else if (canRotateShiftedLeft2) {
-                this.clear();
-                this.block1.shiftL();
-                this.block2.shiftL();
-                this.block3.shiftL();
-                this.block4.shiftL();
-                this.block1.shiftL();
-                this.block2.shiftL();
-                this.block3.shiftL();
-                this.block4.shiftL();
-                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-                this.insert();
+            else if (this.checkRotate(0, 1)) {
+                this.rotationHelper(0, 1);
             }
-            else if (canRotateShiftedRight2) {
-                this.clear();
-                this.block1.shiftR();
-                this.block2.shiftR();
-                this.block3.shiftR();
-                this.block4.shiftR();
-                this.block1.shiftR();
-                this.block2.shiftR();
-                this.block3.shiftR();
-                this.block4.shiftR();
-                this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
-                this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
-                this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
-                this.insert();
+            else if (this.checkRotate(-2, 0)) {
+                this.rotationHelper(-2, 0);
+            }
+            else if (this.checkRotate(2, 0)) {
+                this.rotationHelper(2, 0);
+            }
+            else if (this.checkRotate(0, 2)) {
+                this.rotationHelper(0, 2);
+            }
+            else if (this.checkRotate(1, 1)) {
+                this.rotationHelper(1, 1);
+            }
+            else if (this.checkRotate(-1, 1)) {
+                this.rotationHelper(-1, 1);
+            }
+            else if (this.checkRotate(2, 1)) {
+                this.rotationHelper(2, 1);
+            }
+            else if (this.checkRotate(-2, 1)) {
+                this.rotationHelper(-2, 1);
+            }
+            else if (this.checkRotate(1, 2)) {
+                this.rotationHelper(1, 2);
+            }
+            else if (this.checkRotate(-1, 2)) {
+                this.rotationHelper(-1, 2);
+            }
+            else if (this.checkRotate(2, 2)) {
+                this.rotationHelper(2, 2);
+            }
+            else if (this.checkRotate(-2, 2)) {
+                this.rotationHelper(-2, 2);
             }
         }
     }
     
+    checkRotate(shiftX, shiftY) {
+        return this.block1.testIndex(-this.block1.getY() + this.block2.getY() + this.block2.getX() + shiftX, this.block1.getX() - this.block2.getX() + this.block2.getY() + shiftY, this.arr) &&
+            this.block2.testIndex(this.block2.getX() + shiftX, this.block2.getY() + shiftY, this.arr) &&
+            this.block3.testIndex(-this.block3.getY() + this.block2.getY() + this.block2.getX() + shiftX, this.block3.getX() - this.block2.getX() + this.block2.getY() + shiftY, this.arr) &&
+            this.block4.testIndex(-this.block4.getY() + this.block2.getY() + this.block2.getX() + shiftX, this.block4.getX() - this.block2.getX() + this.block2.getY() + shiftY, this.arr);
+    }
+
+    rotationHelper(shiftX, shiftY) {
+        this.clear();
+        for (let i = 0; i < Math.abs(shiftX); i++) {
+            if (shiftX < 0) {
+                this.block1.shiftL();
+                this.block2.shiftL();
+                this.block3.shiftL();
+                this.block4.shiftL();
+            }
+            else {
+                this.block1.shiftR();
+                this.block2.shiftR();
+                this.block3.shiftR();
+                this.block4.shiftR();
+            }
+        }
+
+        for (let j = 0; j < Math.abs(shiftY); j++) {
+            if (shiftY > 0) {
+                fall();
+            }
+            else {
+                return;
+            }
+        }
+        this.block1.set(-this.block1.getY() + this.block2.getY() + this.block2.getX(), this.block1.getX() - this.block2.getX() + this.block2.getY());
+        this.block3.set(-this.block3.getY() + this.block2.getY() + this.block2.getX(), this.block3.getX() - this.block2.getX() + this.block2.getY());
+        this.block4.set(-this.block4.getY() + this.block2.getY() + this.block2.getX(), this.block4.getX() - this.block2.getX() + this.block2.getY());
+        this.insert();
+    }
+
     shiftR() {
         if (this.block1.canShiftR(this.arr) && this.block2.canShiftR(this.arr) && this.block3.canShiftR(this.arr) && this.block4.canShiftR(this.arr) && !this.dropped) {
             this.clear();
