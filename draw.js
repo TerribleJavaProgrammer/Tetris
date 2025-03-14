@@ -8,6 +8,7 @@ import {
   heldCtx,
   scoreDisplay,
   linesDisplay,
+  highestDisplay,
   ROWS,
   COLUMNS,
   game,
@@ -16,6 +17,7 @@ import {
   colorNameToHex
 } from './constants.js';
 import { updateDebugString } from './debugStringHandler.js';
+import { getHighScore } from './highScoreHandler.js';
 
 export function drawGame(nextPiece, heldPiece) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -38,6 +40,7 @@ export function drawGame(nextPiece, heldPiece) {
 export function updateDisplay(score, clearedLines) {
     scoreDisplay.textContent = `Score: ${score}`;
     linesDisplay.textContent = `Lines: ${clearedLines}`;
+    highestDisplay.textContent = `Highest: ${getHighScore()}`;
 }
 
 function drawBlock(x, y, color, context) {
