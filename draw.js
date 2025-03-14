@@ -18,6 +18,7 @@ import {
 } from './constants.js';
 import { updateDebugString } from './debugStringHandler.js';
 import { getHighScore } from './highScoreHandler.js';
+import { piece } from './gameLogic.js';
 
 export function drawGame(nextPiece, heldPiece) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -32,6 +33,11 @@ export function drawGame(nextPiece, heldPiece) {
             }
         }
     }
+    let shadowArr = piece.getShadowCoords();
+    drawBlock(shadowArr[0], shadowArr[1], 'outline', ctx);
+    drawBlock(shadowArr[2], shadowArr[3], 'outline', ctx);
+    drawBlock(shadowArr[4], shadowArr[5], 'outline', ctx);
+    drawBlock(shadowArr[6], shadowArr[7], 'outline', ctx);
     updateDebugString();
     drawPiecePreview(nextPiece, nextCtx, nextCanvas);
     drawPiecePreview(heldPiece, heldCtx, heldCanvas);
@@ -49,6 +55,11 @@ function drawBlock(x, y, color, context) {
         context.fillStyle = color;
         context.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
         context.strokeStyle = 'darkgray';
+        context.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+    } else if (color == 'outline') {
+        context.fillStyle = "rgba(100, 100, 100, 0.5)";
+        context.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        context.strokeStyle = 'white';
         context.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
     } else {
         const gradient = createBlockGradient(context, x * blockSize, y * blockSize, color, blockSize);
