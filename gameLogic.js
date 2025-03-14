@@ -9,7 +9,7 @@ import {
   pieceColors,
   pieces
 } from './constants.js';
-
+import { updateHighScore } from './highScoreHandler.js';
 import { debugString } from './debugStringHandler.js';
 
 export let piece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
@@ -19,6 +19,7 @@ export let paused = false;
 export let gameLoopRunning = false;
 export let score = 0;
 export let clearedLines = 0;
+
 
 export function gameLoop() {
     if (!gameLoopRunning) {
@@ -96,6 +97,7 @@ export function pauseWithoutPopup() {
 }
 
 export function resetGame() {
+    updateHighScore(score);
     score = 0;
     clearedLines = 0;
     piece = new Piece(pieces[Math.floor(Math.random() * pieces.length)]);
