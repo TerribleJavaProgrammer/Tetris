@@ -51,4 +51,3 @@ As a foray into web development, I have created this website for Tetris. I have 
 ---
 
 Tetris was a great learning project. I hope you enjoy this website!
-- Creator
